@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> corsConfiguration()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/authenticate").permitAll()
+                        .requestMatchers("/authenticate", "/v1/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -65,7 +65,7 @@ public class SecurityConfig {
     private CorsConfiguration corsConfiguration() {
         var corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
