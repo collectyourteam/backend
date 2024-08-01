@@ -26,6 +26,7 @@ public class UserDto implements UserDetails {
     @Id
     private ObjectId id;
     private String username;
+    private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private boolean accountNonExpired;
@@ -35,6 +36,7 @@ public class UserDto implements UserDetails {
     private List<AssignedPermission> grantedPermissions = new ArrayList<>();
     private List<AssignedPermission> deniedPermissions = new ArrayList<>();
 
+    @DocumentReference
     private ImageDto profileImage;
 
     @DocumentReference

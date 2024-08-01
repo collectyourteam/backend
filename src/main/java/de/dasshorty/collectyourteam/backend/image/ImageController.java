@@ -27,7 +27,7 @@ public class ImageController {
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestParam("image") MultipartFile file) {
 
-        log.info("Uploading image: {}", file.getOriginalFilename());
+        log.debug("Uploading image: {}", file.getOriginalFilename());
 
         ImageDto imageDto = new ImageDto();
         try {
