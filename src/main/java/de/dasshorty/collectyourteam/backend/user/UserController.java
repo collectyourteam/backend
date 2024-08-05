@@ -3,6 +3,7 @@ package de.dasshorty.collectyourteam.backend.user;
 import de.dasshorty.collectyourteam.backend.image.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,12 @@ public class UserController {
     public ResponseEntity<?> updateProfileImage(@RequestBody ImageDto imageDto, @AuthenticationPrincipal UserDto userDto) {
         userDto.setProfileImage(imageDto);
         return ResponseEntity.ok(userRepository.save(userDto));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/check-authority")
+    public ResponseEntity<?> checkAuthority() {
+        return ResponseEntity.ok("");
     }
 
     @PostMapping("/add-user")

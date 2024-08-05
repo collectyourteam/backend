@@ -23,19 +23,19 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) throws Exception {
         return Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token) throws Exception {
         return extractAllClaims(token).getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) throws Exception {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    public boolean validateToken(String token, String username) {
+    public boolean validateToken(String token, String username) throws Exception {
         return (extractUsername(token).equals(username) && !isTokenExpired(token));
     }
 }
