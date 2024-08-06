@@ -2,6 +2,7 @@ package de.dasshorty.collectyourteam.backend.user;
 
 import de.dasshorty.collectyourteam.backend.image.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/check-authority")
+    @GetMapping("/check")
     public ResponseEntity<?> checkAuthority() {
         return ResponseEntity.ok("");
     }

@@ -2,8 +2,10 @@ package de.dasshorty.collectyourteam.backend.server;
 
 import de.dasshorty.collectyourteam.backend.image.ImageDto;
 import de.dasshorty.collectyourteam.backend.image.ImageRepository;
+import lombok.val;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,23 +42,6 @@ public class ServerController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> createServer(ServerDto dto) {
-
-        if (dto == null) {
-            return ResponseEntity.badRequest().body("ServerDto is null");
-        }
-
-        if (this.serverRepository.count() > 0) {
-            return ResponseEntity.badRequest().body("Server already exists");
-        }
-
-        this.serverRepository.save(dto);
-
-        return ResponseEntity.ok(dto);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/logo")
     public ResponseEntity<?> updateLogo(@RequestParam ObjectId image) {
 
@@ -86,6 +71,18 @@ public class ServerController {
         first.setBanner(optional.get());
 
         return ResponseEntity.ok(this.serverRepository.save(first));
+    }
+
+    @GetMapping("/banner/view")
+    public ResponseEntity<?> getBanner() {
+        ImageDto banner = this.serverRepository.findAll().getFirst().getBanner();
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(banner.getImage().getData());
+    }
+
+    @GetMapping("/logo/view")
+    public ResponseEntity<?> getLogo() {
+        ImageDto logo = this.serverRepository.findAll().getFirst().getLogo();
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(logo.getImage().getData());
     }
 
 }
