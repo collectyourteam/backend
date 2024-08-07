@@ -2,6 +2,8 @@ package de.dasshorty.collectyourteam.backend.user;
 
 import de.dasshorty.collectyourteam.backend.user.body.AuthRequest;
 import de.dasshorty.collectyourteam.backend.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
 
         try {
 
@@ -51,6 +53,8 @@ public class AuthenticationController {
 
             final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.username());
             final String token = jwtUtil.generateToken(userDetails.getUsername());
+
+            response.addCookie(new Cookie("SESSIONID", token));
 
             return ResponseEntity.ok(token);
 
